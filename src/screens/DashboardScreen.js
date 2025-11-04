@@ -71,7 +71,20 @@ const DashboardScreen = () => {
     };
   };
 
+  const calculateTotalBalance = () => {
+    const totaleEntrateNette = entrate.reduce(
+      (sum, item) => sum + item.importo_netto,
+      0
+    );
+    const totaleSpese = spese.reduce(
+      (sum, item) => sum + item.importo,
+      0
+    );
+    return totaleEntrateNette - totaleSpese;
+  };
+
   const stats = calculateStats();
+  const saldoAttuale = calculateTotalBalance();
 
   const getPeriodLabel = () => {
     switch (selectedPeriod) {
@@ -94,13 +107,13 @@ const DashboardScreen = () => {
         <Text
           style={[
             styles.saldoAmount,
-            { color: stats.saldo >= 0 ? colors.success : colors.error },
+            { color: saldoAttuale >= 0 ? colors.success : colors.error },
           ]}
         >
-          €{stats.saldo.toFixed(2)}
+          €{saldoAttuale.toFixed(2)}
         </Text>
         <Text style={[styles.saldoSubtext, { color: colors.textSecondary }]}>
-          {stats.saldo >= 0 ? '✓ In positivo' : '⚠ In negativo'}
+          {saldoAttuale >= 0 ? '✓ In positivo' : '⚠ In negativo'}
         </Text>
       </View>
 
